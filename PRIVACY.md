@@ -2,7 +2,7 @@
 
 Last updated: 2026-10-19
 
-ETH Price Badge does not collect, sell or share any personal data.
+ETH Price by cp0x does not collect, sell or share any personal data.
 
 - **Network requests.** The extension sends anonymous HTTPS GET requests to `api.binance.com` and `api.coinbase.com`
   to read the public ETH price. As with any web request, the exchanges see your IP address. The extension adds no
@@ -11,4 +11,4 @@ ETH Price Badge does not collect, sell or share any personal data.
   your computer. Chrome clears it when the browser closes. Nothing is sent to the developer.
 - **No analytics, accounts or remote code.**
 
-Questions: open an issue at https://github.com/illlefr4u/eth-price-badge/issues.
+Questions: open an issue at https://github.com/cp0x-org/eth-price-badge/issues.

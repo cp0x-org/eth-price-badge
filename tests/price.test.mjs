@@ -9,7 +9,9 @@
 //     message names every source and its reason.
 //   formatBadge(price) -> string: price < 10000 -> String(Math.floor(price));
 //     price >= 10000 -> `${Math.floor(price / 100) / 10}k`.
-//   COLOR_UP '#008800', COLOR_DOWN '#c45c50', COLOR_NEUTRAL '#607d8b', COLOR_STALE '#9e9e9e'.
+//   cp0x palette: COLOR_UP '#23d92b', COLOR_DOWN '#ef4444', COLOR_NEUTRAL '#39454b', COLOR_STALE '#6b7280'.
+//   badgeTextColor(bg): COLOR_UP -> '#16161f' (dark digits on bright green), COLOR_NEUTRAL -> '#ededed',
+//     anything else (COLOR_DOWN, COLOR_STALE, unknown) -> '#ffffff'.
 //   nextColor(prevPrice, price, prevColor): prevPrice null/undefined -> COLOR_NEUTRAL;
 //     price > prevPrice -> COLOR_UP; price < prevPrice -> COLOR_DOWN; equal -> prevColor ?? COLOR_NEUTRAL.
 //   formatUsd(price) -> '$' + price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
@@ -24,7 +26,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   SOURCES, fetchEthPrice, formatBadge, nextColor, formatUsd, formatTime,
-  formatTitle, formatErrorTitle, COLOR_UP, COLOR_DOWN, COLOR_NEUTRAL, COLOR_STALE,
+  formatTitle, formatErrorTitle, COLOR_UP, COLOR_DOWN, COLOR_NEUTRAL, COLOR_STALE, badgeTextColor,
 } from '../price.js';
 
 const TIME_OPTS = { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' };
@@ -126,10 +128,15 @@ test('formatBadge', () => {
 });
 
 test('colors and nextColor', () => {
-  assert.equal(COLOR_UP, '#008800');
-  assert.equal(COLOR_DOWN, '#c45c50');
-  assert.equal(COLOR_NEUTRAL, '#607d8b');
-  assert.equal(COLOR_STALE, '#9e9e9e');
+  assert.equal(COLOR_UP, '#23d92b');
+  assert.equal(COLOR_DOWN, '#ef4444');
+  assert.equal(COLOR_NEUTRAL, '#39454b');
+  assert.equal(COLOR_STALE, '#6b7280');
+  assert.equal(badgeTextColor(COLOR_UP), '#16161f');
+  assert.equal(badgeTextColor(COLOR_NEUTRAL), '#ededed');
+  assert.equal(badgeTextColor(COLOR_DOWN), '#ffffff');
+  assert.equal(badgeTextColor(COLOR_STALE), '#ffffff');
+  assert.equal(badgeTextColor('#123456'), '#ffffff');
   assert.equal(nextColor(null, 2414.6, undefined), COLOR_NEUTRAL);
   assert.equal(nextColor(undefined, 2414.6, COLOR_UP), COLOR_NEUTRAL);
   assert.equal(nextColor(2400, 2414.6, COLOR_DOWN), COLOR_UP);

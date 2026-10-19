@@ -44,10 +44,16 @@ export async function fetchEthPrice(fetchImpl, sources = SOURCES, timeoutMs = 10
   throw new Error(failures.join('; '));
 }
 
-export const COLOR_UP = '#008800';
-export const COLOR_DOWN = '#c45c50';
-export const COLOR_NEUTRAL = '#607d8b';
-export const COLOR_STALE = '#9e9e9e';
+export const COLOR_UP = '#23d92b';
+export const COLOR_DOWN = '#ef4444';
+export const COLOR_NEUTRAL = '#39454b';
+export const COLOR_STALE = '#6b7280';
+
+export function badgeTextColor(bg) {
+  if (bg === COLOR_UP) return '#16161f';
+  if (bg === COLOR_NEUTRAL) return '#ededed';
+  return '#ffffff';
+}
 
 export function formatBadge(price) {
   return price < 10000 ? String(Math.floor(price)) : `${Math.floor(price / 100) / 10}k`;

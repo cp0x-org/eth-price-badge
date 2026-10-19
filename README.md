@@ -1,6 +1,6 @@
-<img src="icons/icon-128.png" width="72" alt="ETH Price Badge icon" align="right">
+<img src="icons/icon-128.png" width="72" alt="ETH Price by cp0x icon" align="right">
 
-# ETH Price Badge
+# ETH Price by cp0x
 
 A Chrome extension that keeps the current ETH price on your toolbar and updates it every 30 seconds.
 It talks to Binance and Coinbase directly and collects no data.
@@ -15,7 +15,7 @@ a small one that asks the exchanges directly, with a fallback when one of them d
 
 - The badge shows the price in whole dollars (`2418`). From $10,000 on it switches to `10.2k`.
 - The badge turns green when the price went up since the previous update and red when it went down. If the price
-  did not change, the color stays. The first reading after the browser starts is blue-grey.
+  did not change, the color stays. The first reading after the browser starts is graphite.
 - Hover over the icon to see the exact price, the source and the time of the last update.
 - Click the icon to refresh right away.
 - If neither exchange answers, the badge keeps the last known price on a grey background and the tooltip shows the
@@ -26,10 +26,10 @@ a small one that asks the exchanges directly, with a fallback when one of them d
 The extension is not in the Chrome Web Store yet. To install it from source:
 
 1. Download this repository (**Code → Download ZIP**) and unzip it, or run
-   `git clone https://github.com/illlefr4u/eth-price-badge.git`.
+   `git clone https://github.com/cp0x-org/eth-price-badge.git`.
 2. Open `chrome://extensions` and switch on **Developer mode** in the top right corner.
 3. Click **Load unpacked** and select the folder with `manifest.json`.
-4. Click the puzzle icon in the toolbar and pin **ETH Price Badge**.
+4. Click the puzzle icon in the toolbar and pin **ETH Price by cp0x**.
 
 To update, pull or download the new version and press the reload button on the extension card in
 `chrome://extensions`.
@@ -78,3 +78,5 @@ The contract of each module is written at the top of its test file.
 ## License
 
 [MIT](LICENSE)
+
+Made by [cp0x](https://cp0x.com).

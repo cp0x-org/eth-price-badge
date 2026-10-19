@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "ETH Price Badge",
+  "name": "ETH Price by cp0x",
   "version": "1.0.0",
   "description": "Shows the ETH price on the toolbar badge and refreshes every 30 seconds.",
   "permissions": ["alarms", "storage"],

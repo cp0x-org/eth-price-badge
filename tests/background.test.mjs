@@ -12,11 +12,11 @@
 //     color = nextColor(prev?.price, price, prev?.color)
 //     chrome.action.setBadgeText({text: formatBadge(price)})
 //     chrome.action.setBadgeBackgroundColor({color})
-//     chrome.action.setBadgeTextColor({color: '#ffffff'})
+//     chrome.action.setBadgeTextColor({color: badgeTextColor(color)})
 //     chrome.action.setTitle({title: formatTitle({price, source, at: new Date(at)})})
 //     chrome.storage.session.set({state: {price, color, source, at}})   // at = Date.now() ms
 //   failure: badge text untouched if prev exists, otherwise setBadgeText({text: '?'});
-//     setBadgeBackgroundColor({color: COLOR_STALE});
+//     setBadgeBackgroundColor({color: COLOR_STALE}); setBadgeTextColor({color: badgeTextColor(COLOR_STALE)});
 //     setTitle({title: formatErrorTitle({error: err.message, lastPrice: prev?.price ?? null,
 //                                        lastAt: prev ? new Date(prev.at) : null})});
 //     stored state is not changed.
@@ -28,7 +28,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  formatTitle, formatErrorTitle, COLOR_UP, COLOR_DOWN, COLOR_NEUTRAL, COLOR_STALE,
+  formatTitle, formatErrorTitle, COLOR_UP, COLOR_DOWN, COLOR_NEUTRAL, COLOR_STALE, badgeTextColor,
 } from '../price.js';
 
 const BINANCE_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT';
@@ -118,7 +118,7 @@ test('first successful refresh: badge text, neutral color, white text, title, st
   await mod.refresh();
   assert.deepEqual(last(env.calls, 'setBadgeText'), ['setBadgeText', { text: '2414' }]);
   assert.deepEqual(last(env.calls, 'setBadgeBackgroundColor'), ['setBadgeBackgroundColor', { color: COLOR_NEUTRAL }]);
-  assert.deepEqual(last(env.calls, 'setBadgeTextColor'), ['setBadgeTextColor', { color: '#ffffff' }]);
+  assert.deepEqual(last(env.calls, 'setBadgeTextColor'), ['setBadgeTextColor', { color: '#ededed' }]);
   const st = env.storage.state;
   assert.equal(st.price, 2414.6);
   assert.equal(st.color, COLOR_NEUTRAL);
@@ -137,12 +137,14 @@ test('direction colors across refreshes; unchanged keeps color', async () => {
   setPrices(2414.6);
   await mod.refresh();
   assert.deepEqual(last(env.calls, 'setBadgeBackgroundColor'), ['setBadgeBackgroundColor', { color: COLOR_UP }]);
+  assert.deepEqual(last(env.calls, 'setBadgeTextColor'), ['setBadgeTextColor', { color: badgeTextColor(COLOR_UP) }]);
   await mod.refresh();
   assert.deepEqual(last(env.calls, 'setBadgeBackgroundColor'), ['setBadgeBackgroundColor', { color: COLOR_UP }]);
   setPrices(2390.1);
   await mod.refresh();
   assert.deepEqual(last(env.calls, 'setBadgeBackgroundColor'), ['setBadgeBackgroundColor', { color: COLOR_DOWN }]);
   assert.deepEqual(last(env.calls, 'setBadgeText'), ['setBadgeText', { text: '2390' }]);
+  assert.deepEqual(last(env.calls, 'setBadgeTextColor'), ['setBadgeTextColor', { color: badgeTextColor(COLOR_DOWN) }]);
 });
 
 test('Binance down -> Coinbase price shown with source Coinbase', async () => {
@@ -166,6 +168,7 @@ test('all sources fail after a success: stale color, old text kept, error title,
   const newTexts = all(env.calls, 'setBadgeText').slice(textCallsBefore);
   assert.ok(newTexts.every((c) => c[1].text === '2414'), 'badge text must keep the last price');
   assert.deepEqual(last(env.calls, 'setBadgeBackgroundColor'), ['setBadgeBackgroundColor', { color: COLOR_STALE }]);
+  assert.deepEqual(last(env.calls, 'setBadgeTextColor'), ['setBadgeTextColor', { color: badgeTextColor(COLOR_STALE) }]);
   assert.deepEqual(env.storage.state, before);
   const title = last(env.calls, 'setTitle')[1].title;
   const expectedPrefix = formatErrorTitle({ error: 'X', lastPrice: 2414.6, lastAt: new Date(before.at) })

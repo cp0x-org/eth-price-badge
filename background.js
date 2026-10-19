@@ -1,5 +1,5 @@
 import {
-  fetchEthPrice, formatBadge, nextColor, formatTitle, formatErrorTitle, COLOR_STALE,
+  fetchEthPrice, formatBadge, nextColor, formatTitle, formatErrorTitle, COLOR_STALE, badgeTextColor,
 } from './price.js';
 
 export const ALARM = 'eth-price';
@@ -28,13 +28,14 @@ async function refreshOnce() {
     const at = Date.now();
     await chrome.action.setBadgeText({ text: formatBadge(price) });
     await chrome.action.setBadgeBackgroundColor({ color });
-    await chrome.action.setBadgeTextColor({ color: '#ffffff' });
+    await chrome.action.setBadgeTextColor({ color: badgeTextColor(color) });
     await chrome.action.setTitle({ title: formatTitle({ price, source, at: new Date(at) }) });
     await chrome.storage.session.set({ state: { price, color, source, at } });
   } catch (error) {
     try {
       if (!prev) await chrome.action.setBadgeText({ text: '?' });
       await chrome.action.setBadgeBackgroundColor({ color: COLOR_STALE });
+      await chrome.action.setBadgeTextColor({ color: badgeTextColor(COLOR_STALE) });
       await chrome.action.setTitle({
         title: formatErrorTitle({
           error: error instanceof Error ? error.message : String(error),

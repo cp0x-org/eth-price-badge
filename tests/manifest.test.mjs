@@ -10,7 +10,7 @@ const m = JSON.parse(readFileSync(path.join(root, 'manifest.json'), 'utf8'));
 
 test('manifest v3 basics', () => {
   assert.equal(m.manifest_version, 3);
-  assert.match(m.name, /ETH/);
+  assert.equal(m.name, 'ETH Price by cp0x');
   assert.equal(typeof m.version, 'string');
   assert.deepEqual(m.background, { service_worker: 'background.js', type: 'module' });
 });
