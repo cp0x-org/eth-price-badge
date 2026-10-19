@@ -1,0 +1,14 @@
+{
+  "name": "eth-price-badge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chrome extension: live ETH price on the toolbar badge, updated every 30 seconds (Binance with Coinbase fallback).",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/illlefr4u/eth-price-badge.git"
+  },
+  "keywords": ["chrome-extension", "ethereum", "eth", "price", "ticker", "badge", "manifest-v3", "binance", "coinbase"],
+  "scripts": { "test": "node --test" }
+}
